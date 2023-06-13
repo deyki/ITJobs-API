@@ -2,8 +2,11 @@ package com.deyki.userservice.service;
 
 import com.deyki.userservice.entity.User;
 import com.deyki.userservice.error.InvalidCredentialsException;
+import com.deyki.userservice.error.UserNotFoundException;
 import com.deyki.userservice.model.AuthRequest;
 import com.deyki.userservice.model.AuthResponse;
+import com.deyki.userservice.model.UserProfileDetailsRequest;
+import com.deyki.userservice.model.UserResponse;
 import com.deyki.userservice.repository.UserRepository;
 import com.deyki.userservice.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
@@ -83,6 +86,54 @@ public class UserServiceImpl implements UserService {
         authManagerService.authenticate(authRequest);
 
         return new AuthResponse(JWToken);
+    }
+
+    @Override
+    public UserResponse createProfileDetails(Long userID, UserProfileDetailsRequest userProfileDetailsRequest) {
+        User user = userRepository
+                .findById(userID)
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
+
+        userRepository
+                .findByEmail(userProfileDetailsRequest.email())
+                .ifPresent(user1 -> {
+                    throw new InvalidCredentialsException(String.format("Email %s is not available!", userProfileDetailsRequest.email()));
+                });
+
+        userRepository
+                .findByPhoneNumber(userProfileDetailsRequest.phoneNumber())
+                .ifPresent(user1 -> {
+                    throw new InvalidCredentialsException("This phone number is unavailable!");
+                });
+
+        user.setFirstName(userProfileDetailsRequest.firstName());
+        user.setLastName(userProfileDetailsRequest.lastName());
+        user.setEmail(userProfileDetailsRequest.email());
+        user.setPhoneNumber(userProfileDetailsRequest.phoneNumber());
+
+        userRepository.save(user);
+        log.info(String.format("User %s added profile details!", user.getUsername()));
+
+        return new UserResponse(
+                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPhoneNumber());
+    }
+
+    @Override
+    public UserResponse getUserById(Long userID) {
+        return userRepository
+                .findById(userID)
+                .map(user -> new UserResponse(
+                        user.getUsername(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getPhoneNumber()
+                ))
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
     }
 
     @Override
