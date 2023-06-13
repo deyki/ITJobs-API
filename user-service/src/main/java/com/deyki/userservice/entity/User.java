@@ -23,11 +23,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private Long userID;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable=false, unique=true)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable=false)
     private String password;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "email", unique=true)
+    private String email;
+
+    @Column(name = "phone_number", unique=true)
+    private Integer phoneNumber;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
