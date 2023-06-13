@@ -15,4 +15,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ProblemDetail invalidCredentialsException(InvalidCredentialsException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ProblemDetail userNotFoundException(UserNotFoundException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
 }
