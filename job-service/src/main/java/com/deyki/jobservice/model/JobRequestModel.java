@@ -1,6 +1,5 @@
 package com.deyki.jobservice.model;
 
-import com.deyki.jobservice.client.UserResponse;
 import lombok.Data;
 
 import java.util.List;
