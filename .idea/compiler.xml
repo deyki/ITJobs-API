@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="job-service" />
+        <module name="job-application-service" />
         <module name="user-service" />
         <module name="discovery-server" />
         <module name="discovery-service" />
@@ -18,6 +19,7 @@
       <module name="config-service" target="17" />
       <module name="discovery-server" target="17" />
       <module name="discovery-service" target="17" />
+      <module name="job-application-service" target="17" />
       <module name="job-service" target="17" />
       <module name="user-service" target="17" />
     </bytecodeTargetLevel>
@@ -28,6 +30,7 @@
       <module name="config-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
+      <module name="job-application-service" options="-parameters" />
       <module name="job-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
