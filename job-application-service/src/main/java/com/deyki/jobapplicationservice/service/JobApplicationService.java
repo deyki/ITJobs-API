@@ -1,11 +1,14 @@
 package com.deyki.jobapplicationservice.service;
 
 import com.deyki.jobapplicationservice.model.JobApplicationRequest;
+import com.deyki.jobapplicationservice.model.JobApplicationResponse;
 import com.deyki.jobapplicationservice.model.ResponseModel;
 
 public interface JobApplicationService {
 
     ResponseModel newJobApplication(JobApplicationRequest jobApplicationRequest);
+
+    JobApplicationResponse getJobApplicationByJobId(Long jobID);
 
     void validateUserId(Long userID);
 

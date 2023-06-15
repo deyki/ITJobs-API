@@ -8,6 +8,7 @@ import com.deyki.jobapplicationservice.entity.JobApplication;
 import com.deyki.jobapplicationservice.error.JobNotFoundException;
 import com.deyki.jobapplicationservice.error.UserNotFoundException;
 import com.deyki.jobapplicationservice.model.JobApplicationRequest;
+import com.deyki.jobapplicationservice.model.JobApplicationResponse;
 import com.deyki.jobapplicationservice.model.ResponseModel;
 import com.deyki.jobapplicationservice.repository.JobApplicationRepository;
 import com.deyki.jobapplicationservice.service.JobApplicationService;
@@ -46,6 +47,14 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         log.info("New job application is added!");
 
         return new ResponseModel("Application submitted!");
+    }
+
+    @Override
+    public JobApplicationResponse getJobApplicationByJobId(Long jobID) {
+        return repository
+                .findByJobId(jobID)
+                .map(jobApplication -> modelMapper.map(jobApplication, JobApplicationResponse.class))
+                .orElseThrow(() -> new JobNotFoundException("Job application not found!"));
     }
 
     @Override

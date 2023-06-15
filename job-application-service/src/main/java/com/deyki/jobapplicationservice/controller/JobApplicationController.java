@@ -1,0 +1,32 @@
+package com.deyki.jobapplicationservice.controller;
+
+import com.deyki.jobapplicationservice.model.JobApplicationRequest;
+import com.deyki.jobapplicationservice.model.JobApplicationResponse;
+import com.deyki.jobapplicationservice.model.ResponseModel;
+import com.deyki.jobapplicationservice.service.impl.JobApplicationServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/job-application")
+@RequiredArgsConstructor
+public class JobApplicationController {
+
+    private final JobApplicationServiceImpl jobApplicationService;
+
+    @PostMapping("/create")
+    public ResponseEntity<ResponseModel> createNewJobApplication(@RequestBody JobApplicationRequest jobApplicationRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(jobApplicationService.newJobApplication(jobApplicationRequest));
+    }
+
+    @GetMapping("/{jobID}")
+    public ResponseEntity<JobApplicationResponse> getJobApplicationByJobId(@PathVariable Long jobID) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(jobApplicationService.getJobApplicationByJobId(jobID));
+    }
+}
