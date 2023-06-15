@@ -15,4 +15,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ProblemDetail userNotFoundException(UserNotFoundException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
+
+    @ExceptionHandler(JobNotFoundException.class)
+    public ProblemDetail jobNotFoundException(JobNotFoundException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
 }
