@@ -12,5 +12,13 @@ public interface JobService {
 
     List<JobResponseModel> getAllJobs();
 
+    JobResponseModel getJobById(Long jobID);
+
+    List<JobResponseModel> getJobsWithHomeOffice();
+
+    List<JobResponseModel> getJobsByUsername(String username);
+
+    ResponseModel deleteJobById(Long jobID);
+
     void validateUserId(Long userID);
 }

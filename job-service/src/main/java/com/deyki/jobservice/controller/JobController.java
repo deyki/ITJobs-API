@@ -31,4 +31,32 @@ public class JobController {
                 .status(HttpStatus.OK)
                 .body(jobService.getAllJobs());
     }
+
+    @GetMapping("/{jobID}")
+    public ResponseEntity<JobResponseModel> getJobById(@PathVariable Long jobID) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(jobService.getJobById(jobID));
+    }
+
+    @GetMapping("/homeOffice")
+    public ResponseEntity<List<JobResponseModel>> getJobsWithHomeOffice() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(jobService.getJobsWithHomeOffice());
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<List<JobResponseModel>> getJobsByUsername(@PathVariable String username) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(jobService.getJobsByUsername(username));
+    }
+
+    @DeleteMapping("/delete/{jobID}")
+    public ResponseEntity<ResponseModel> deleteJobById(@PathVariable Long jobID) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(jobService.deleteJobById(jobID));
+    }
 }

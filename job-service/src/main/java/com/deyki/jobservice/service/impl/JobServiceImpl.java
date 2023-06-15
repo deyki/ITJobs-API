@@ -3,6 +3,7 @@ package com.deyki.jobservice.service.impl;
 import com.deyki.jobservice.client.UserClient;
 import com.deyki.jobservice.client.UserResponse;
 import com.deyki.jobservice.entity.Job;
+import com.deyki.jobservice.error.JobNotFoundException;
 import com.deyki.jobservice.error.UserNotFoundException;
 import com.deyki.jobservice.model.JobRequestModel;
 import com.deyki.jobservice.model.JobResponseModel;
@@ -50,11 +51,53 @@ public class JobServiceImpl implements JobService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public JobResponseModel getJobById(Long jobID) {
+        return jobRepository
+                .findById(jobID)
+                .map(job -> modelMapper.map(job, JobResponseModel.class))
+                .orElseThrow(() -> new JobNotFoundException("Job not found!"));
+    }
+
+    @Override
+    public List<JobResponseModel> getJobsWithHomeOffice() {
+        return jobRepository
+                .findAll()
+                .stream()
+                .filter(job -> job.getHomeOffice().equals(true))
+                .map(job -> modelMapper.map(job, JobResponseModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<JobResponseModel> getJobsByUsername(String username) {
+        return jobRepository
+                .findAll()
+                .stream()
+                .filter(job -> job.getUser().equals(username))
+                .map(job -> modelMapper.map(job, JobResponseModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ResponseModel deleteJobById(Long jobID) {
+        Job job = jobRepository
+                .findById(jobID)
+                .orElseThrow(() -> new JobNotFoundException("Job not found!"));
+
+        jobRepository.deleteById(jobID);
+        log.info(String.format("Job with id %d deleted!", jobID));
+
+        return new ResponseModel("Job deleted!");
+    }
+
+    @Override
     public void validateUserId(Long userID) {
         try {
             userClient.getUserById(userID);
         } catch (RuntimeException exception) {
             throw new UserNotFoundException("User not found!");
         }
+        log.info(String.format("User %d validated!", userID));
     }
 }
