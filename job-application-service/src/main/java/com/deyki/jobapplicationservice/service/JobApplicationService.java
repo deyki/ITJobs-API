@@ -7,13 +7,11 @@ import com.deyki.jobapplicationservice.model.ResponseModel;
 import java.util.List;
 
 public interface JobApplicationService {
-
     ResponseModel newJobApplication(JobApplicationRequest jobApplicationRequest);
 
     List<JobApplicationResponse> getJobApplicationByJobId(Long jobID);
 
     List<JobApplicationResponse> getJobApplicationByUsername(String username);
-
 
     void validateUserId(Long userID);
 
