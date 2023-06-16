@@ -1,6 +1,7 @@
 package com.deyki.userservice.controller;
 
 import com.deyki.userservice.model.AuthRequest;
+import com.deyki.userservice.model.UserContactInfo;
 import com.deyki.userservice.model.UserProfileDetailsRequest;
 import com.deyki.userservice.model.UserResponse;
 import com.deyki.userservice.service.UserServiceImpl;
@@ -43,5 +44,12 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.getUserById(userID));
+    }
+
+    @GetMapping("/contacts/{username}")
+    public ResponseEntity<UserContactInfo> getUserContactInfoByUsername(@PathVariable String username) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.getUserContactInfoByUsername(username));
     }
 }

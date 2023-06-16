@@ -3,10 +3,7 @@ package com.deyki.userservice.service;
 import com.deyki.userservice.entity.User;
 import com.deyki.userservice.error.InvalidCredentialsException;
 import com.deyki.userservice.error.UserNotFoundException;
-import com.deyki.userservice.model.AuthRequest;
-import com.deyki.userservice.model.AuthResponse;
-import com.deyki.userservice.model.UserProfileDetailsRequest;
-import com.deyki.userservice.model.UserResponse;
+import com.deyki.userservice.model.*;
 import com.deyki.userservice.repository.UserRepository;
 import com.deyki.userservice.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
@@ -134,6 +131,14 @@ public class UserServiceImpl implements UserService {
                         user.getPhoneNumber()
                 ))
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
+    }
+
+    @Override
+    public UserContactInfo getUserContactInfoByUsername(String username) {
+        return userRepository
+                .findByUsername(username)
+                .map(user -> new UserContactInfo(user.getEmail(), user.getPhoneNumber()))
+                .orElseThrow(() -> new UserNotFoundException(String.format("User %s not found!", username)));
     }
 
     @Override
