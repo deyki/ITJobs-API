@@ -16,4 +16,5 @@ public class JobResponseModel {
     private Integer experience;
     private Integer salary;
     private String user;
+    private Boolean active;
 }
