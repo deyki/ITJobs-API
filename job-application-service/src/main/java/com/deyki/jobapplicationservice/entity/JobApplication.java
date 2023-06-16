@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -56,4 +57,7 @@ public class JobApplication {
 
     @Column(name = "salary", nullable = false)
     private Integer salary;
+
+    @Column(name = "date", nullable = false)
+    private LocalDateTime date;
 }
