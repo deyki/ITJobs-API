@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/job-application")
 @RequiredArgsConstructor
@@ -24,9 +26,16 @@ public class JobApplicationController {
     }
 
     @GetMapping("/{jobID}")
-    public ResponseEntity<JobApplicationResponse> getJobApplicationByJobId(@PathVariable Long jobID) {
+    public ResponseEntity<List<JobApplicationResponse>> getJobApplicationByJobId(@PathVariable Long jobID) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(jobApplicationService.getJobApplicationByJobId(jobID));
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<List<JobApplicationResponse>> getJobApplicationByUsername(@PathVariable String username) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(jobApplicationService.getJobApplicationByUsername(username));
     }
 }

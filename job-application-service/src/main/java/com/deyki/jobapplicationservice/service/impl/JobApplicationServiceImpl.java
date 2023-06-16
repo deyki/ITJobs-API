@@ -18,6 +18,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -42,6 +46,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         jobApplication.setUserID(jobApplicationRequest.userID());
         jobApplication.setJobID(jobApplicationRequest.jobID());
         jobApplication.setUsername(userResponse.getBody().username());
+        jobApplication.setDate(LocalDateTime.now());
 
         repository.save(jobApplication);
         log.info("New job application is added!");
@@ -50,11 +55,23 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     }
 
     @Override
-    public JobApplicationResponse getJobApplicationByJobId(Long jobID) {
+    public List<JobApplicationResponse> getJobApplicationByJobId(Long jobID) {
         return repository
-                .findByJobId(jobID)
+                .findAll()
+                .stream()
+                .filter(jobApplication -> jobApplication.getJobID().equals(jobID))
                 .map(jobApplication -> modelMapper.map(jobApplication, JobApplicationResponse.class))
-                .orElseThrow(() -> new JobNotFoundException("Job application not found!"));
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<JobApplicationResponse> getJobApplicationByUsername(String username) {
+        return repository
+                .findAll()
+                .stream()
+                .filter(jobApplication -> jobApplication.getUsername().equals(username))
+                .map(jobApplication -> modelMapper.map(jobApplication, JobApplicationResponse.class))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -4,11 +4,16 @@ import com.deyki.jobapplicationservice.model.JobApplicationRequest;
 import com.deyki.jobapplicationservice.model.JobApplicationResponse;
 import com.deyki.jobapplicationservice.model.ResponseModel;
 
+import java.util.List;
+
 public interface JobApplicationService {
 
     ResponseModel newJobApplication(JobApplicationRequest jobApplicationRequest);
 
-    JobApplicationResponse getJobApplicationByJobId(Long jobID);
+    List<JobApplicationResponse> getJobApplicationByJobId(Long jobID);
+
+    List<JobApplicationResponse> getJobApplicationByUsername(String username);
+
 
     void validateUserId(Long userID);
 
