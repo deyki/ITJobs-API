@@ -53,6 +53,13 @@ public class JobController {
                 .body(jobService.getJobsByUsername(username));
     }
 
+    @PutMapping("/update/active/{jobID}/{userID}")
+    public ResponseEntity<ResponseModel> updateJobActiveByUserIdAndJobId(@PathVariable Long jobID, @PathVariable Long userID) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(jobService.updateJobActiveByUserIdAndJobId(jobID, userID));
+    }
+
     @DeleteMapping("/delete/{jobID}")
     public ResponseEntity<ResponseModel> deleteJobById(@PathVariable Long jobID) {
         return ResponseEntity

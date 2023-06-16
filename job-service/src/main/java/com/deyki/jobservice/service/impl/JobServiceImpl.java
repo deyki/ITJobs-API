@@ -36,6 +36,7 @@ public class JobServiceImpl implements JobService {
 
         Job job = modelMapper.map(jobRequestModel, Job.class);
         job.setUser(userResponse.getBody().username());
+        job.setActive(true);
         jobRepository.save(job);
         log.info("Job created!");
 
@@ -47,6 +48,7 @@ public class JobServiceImpl implements JobService {
         return jobRepository
                 .findAll()
                 .stream()
+                .filter(job -> job.getActive().equals(true))
                 .map(job -> modelMapper.map(job, JobResponseModel.class))
                 .collect(Collectors.toList());
     }
@@ -64,7 +66,7 @@ public class JobServiceImpl implements JobService {
         return jobRepository
                 .findAll()
                 .stream()
-                .filter(job -> job.getHomeOffice().equals(true))
+                .filter(job -> job.getHomeOffice().equals(true) && job.getActive().equals(true))
                 .map(job -> modelMapper.map(job, JobResponseModel.class))
                 .collect(Collectors.toList());
     }
@@ -80,12 +82,32 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public ResponseModel updateJobActiveByUserIdAndJobId(Long userID, Long jobID) {
+        validateUserId(userID);
+
+        UserResponse userResponse = userClient.getUserById(userID).getBody();
+
+        Job job = jobRepository
+                .findById(jobID)
+                .orElseThrow(() -> new JobNotFoundException("Job not found!"));
+
+        if (!job.getUser().equals(userResponse.username())) {
+            throw new JobNotFoundException("Invalid userID or jobID");
+        }
+
+        changeJobStatus(job);
+        jobRepository.save(job);
+
+        return new ResponseModel("Job active status changed!");
+    }
+
+    @Override
     public ResponseModel deleteJobById(Long jobID) {
         Job job = jobRepository
                 .findById(jobID)
                 .orElseThrow(() -> new JobNotFoundException("Job not found!"));
 
-        jobRepository.deleteById(jobID);
+        jobRepository.deleteById(job.getJobID());
         log.info(String.format("Job with id %d deleted!", jobID));
 
         return new ResponseModel("Job deleted!");
@@ -99,5 +121,14 @@ public class JobServiceImpl implements JobService {
             throw new UserNotFoundException("User not found!");
         }
         log.info(String.format("User %d validated!", userID));
+    }
+
+    @Override
+    public void changeJobStatus(Job job) {
+        if (job.getActive().equals(true)) {
+            job.setActive(false);
+        } else {
+            job.setActive(true);
+        }
     }
 }

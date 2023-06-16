@@ -1,5 +1,6 @@
 package com.deyki.jobservice.service;
 
+import com.deyki.jobservice.entity.Job;
 import com.deyki.jobservice.model.JobRequestModel;
 import com.deyki.jobservice.model.JobResponseModel;
 import com.deyki.jobservice.model.ResponseModel;
@@ -18,7 +19,11 @@ public interface JobService {
 
     List<JobResponseModel> getJobsByUsername(String username);
 
+    ResponseModel updateJobActiveByUserIdAndJobId(Long userID, Long jobID);
+
     ResponseModel deleteJobById(Long jobID);
 
     void validateUserId(Long userID);
+
+    void changeJobStatus(Job job);
 }
