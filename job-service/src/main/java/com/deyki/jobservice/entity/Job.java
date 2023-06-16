@@ -50,4 +50,7 @@ public class Job {
 
     @Column(name = "app_user", nullable = false)
     private String user;
+
+    @Column(name = "active")
+    private Boolean active;
 }
