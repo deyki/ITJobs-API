@@ -32,10 +32,10 @@ public class JobServiceImpl implements JobService {
     public ResponseModel createNewJob(Long userID, JobRequestModel jobRequestModel) {
         validateUserId(userID);
 
-        ResponseEntity<UserResponse> userResponse = userClient.getUserById(userID);
+        UserResponse userResponse = userClient.getUserById(userID).getBody();
 
         Job job = modelMapper.map(jobRequestModel, Job.class);
-        job.setUser(userResponse.getBody().username());
+        job.setUser(userResponse.username());
         job.setActive(true);
         jobRepository.save(job);
         log.info("Job created!");
