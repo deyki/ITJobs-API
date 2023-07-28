@@ -4,7 +4,7 @@ import com.deyki.userservice.model.AuthRequest;
 import com.deyki.userservice.model.UserContactInfo;
 import com.deyki.userservice.model.UserProfileDetailsRequest;
 import com.deyki.userservice.model.UserResponse;
-import com.deyki.userservice.service.UserServiceImpl;
+import com.deyki.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @PostMapping("/sign-up")
     public ResponseEntity<String> signUp(@RequestBody AuthRequest authRequest) {

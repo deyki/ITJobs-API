@@ -3,7 +3,7 @@ package com.deyki.jobapplicationservice.controller;
 import com.deyki.jobapplicationservice.model.JobApplicationRequest;
 import com.deyki.jobapplicationservice.model.JobApplicationResponse;
 import com.deyki.jobapplicationservice.model.ResponseModel;
-import com.deyki.jobapplicationservice.service.impl.JobApplicationServiceImpl;
+import com.deyki.jobapplicationservice.service.JobApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JobApplicationController {
 
-    private final JobApplicationServiceImpl jobApplicationService;
+    private final JobApplicationService jobApplicationService;
 
     @PostMapping("/create")
     public ResponseEntity<ResponseModel> createNewJobApplication(@RequestBody JobApplicationRequest jobApplicationRequest) {
